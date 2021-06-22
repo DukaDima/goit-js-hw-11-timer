@@ -4,16 +4,25 @@ console.log('goit-js-hw-11-timer');
 class CountdownTimer {
   constructor({ refs, targetDate }) {
     this.refs = refs; 
-    this.targetDate = targetDate;
+      this.targetDate = targetDate;
+      this.intervalID = null;
   }
 
 
   start() {
-      setInterval(() => {
+      this.intervalID =  setInterval(() => {
       const currentDate = Date.now();
       const deltaTime = this.targetDate - currentDate;
-      this.timeLeft = this.getTimeComponents(deltaTime);
-      this.updateView(this.timeLeft);
+          if (deltaTime <= 0) {
+              this.stop();
+              return;
+              
+          } else {
+                this.timeLeft = this.getTimeComponents(deltaTime);
+               this.updateView(this.timeLeft);
+                  }
+
+    
     }, 1000);
   }
 
@@ -33,6 +42,16 @@ class CountdownTimer {
     refs.mins.textContent = `${mins}`;
     refs.secs.textContent = `${secs}`;
   }
+    stop() {
+        refs.days.textContent = '00';
+        refs.hours.textContent ='00';
+        refs.mins.textContent = '00';
+        refs.secs.textContent = '00';
+        
+        clearInterval(this.intervalID);
+        
+        // console.log('Лето кончилось')
+    }
     
 }
   // массив ссылок -----------------------------
@@ -51,7 +70,7 @@ const timer1 = new CountdownTimer({
 });
 
 timer1.start();
-// раскрассил таймер ------------------------------
+// раскрасил таймер ------------------------------
 
 refs.timer.style.backgroundColor = 'red'
 refs.timer.style.display = 'flex'
